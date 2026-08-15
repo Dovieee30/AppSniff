@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import gplay from 'google-play-scraper';
+import appStore from 'app-store-scraper';
 import { createClient } from '@supabase/supabase-js';
 import Groq from 'groq-sdk';
 
@@ -12,36 +13,57 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 export async function POST(req: Request) {
   try {
-    const { appId } = await req.json();
+    const { appId, platform = 'android' } = await req.json();
 
     if (!appId) {
       return NextResponse.json({ error: 'App ID is required' }, { status: 400 });
     }
 
-    // 1. Scrape App Data from Google Play
-    let appData;
-    try {
-      appData = await gplay.app({ appId });
-    } catch (e: any) {
-      console.error("Scraper error:", e.message);
-      return NextResponse.json({ error: 'App not found on Play Store or invalid ID' }, { status: 404 });
-    }
-    
-    // Scrape Permissions
+    let appData: any = {};
     let permissions: any[] = [];
-    try {
-      permissions = await gplay.permissions({ appId });
-    } catch (e) {
-      console.warn("Could not fetch permissions:", e);
-    }
-    
-    // Scrape Reviews
     let reviews: any[] = [];
-    try {
-      const reviewsData = await gplay.reviews({ appId, sort: gplay.sort.NEWEST, num: 50 });
-      reviews = reviewsData.data;
-    } catch (e) {
-      console.warn("Could not fetch reviews:", e);
+
+    if (platform === 'ios') {
+      try {
+        const iosData = await appStore.app({ id: appId, country: 'in' });
+        appData = {
+          title: iosData.title,
+          developer: iosData.developer,
+          genre: iosData.primaryGenre,
+          icon: iosData.icon,
+          installs: 'N/A (iOS)',
+          score: iosData.score
+        };
+      } catch (e: any) {
+        console.error("iOS Scraper error:", e.message);
+        return NextResponse.json({ error: 'App not found on Apple App Store or invalid ID' }, { status: 404 });
+      }
+      try {
+        const iosReviews = await appStore.reviews({ id: appId, country: 'in', sort: appStore.sort.RECENT, page: 1 });
+        reviews = iosReviews;
+      } catch (e) {
+        console.warn("Could not fetch iOS reviews:", e);
+      }
+    } else {
+      try {
+        appData = await gplay.app({ appId, country: 'in' });
+      } catch (e: any) {
+        console.error("Scraper error:", e.message);
+        return NextResponse.json({ error: 'App not found on Play Store or invalid ID' }, { status: 404 });
+      }
+      
+      try {
+        permissions = await gplay.permissions({ appId, country: 'in' });
+      } catch (e) {
+        console.warn("Could not fetch permissions:", e);
+      }
+      
+      try {
+        const reviewsData = await gplay.reviews({ appId, country: 'in', sort: gplay.sort.NEWEST, num: 50 });
+        reviews = reviewsData.data;
+      } catch (e) {
+        console.warn("Could not fetch reviews:", e);
+      }
     }
 
     // 2. Check RBI Registry in Supabase
@@ -61,25 +83,32 @@ export async function POST(req: Request) {
     const reviewsList = reviews.map(r => r.text).join('\n').substring(0, 3000) || 'No reviews found';
 
     const prompt = `
-      You are an AI security analyst specialized in detecting predatory loan apps.
-      Analyze the following Android app data:
+      You are an elite cybersecurity AI specialized in detecting predatory loan apps and protecting consumers.
+      Analyze the following app data and score its safety on a scale of 0 to 100.
       
       App Name: ${appData.title}
       Developer: ${appData.developer}
       Category/Genre: ${appData.genre || 'Unknown'}
-      RBI Registered NBFC: ${isRBIRegistered ? 'Yes' : 'No'}
+      Platform: ${platform.toUpperCase()}
+      RBI Registered NBFC: ${isRBIRegistered ? 'YES (Verified)' : 'NO (Unverified/Warning)'}
       
-      Permissions Requested:
+      Permissions Requested (if Android):
       ${permissionsList}
       
       Recent User Reviews:
       ${reviewsList}
       
+      SCORING RULES:
+      1. If the app is RBI Registered (YES), it is a legally compliant banking/finance app. Permissions like SMS (for OTP), Contacts (for UPI/Sharing), Camera (for KYC), and Location are STANDARD and JUSTIFIED. Do NOT penalize the app for these permissions unless reviews explicitly mention data theft or blackmail.
+      2. If an RBI Registered app has bad reviews about "loan rejected" or "high interest", that is normal customer service friction, NOT a scam. Score it highly (70-100).
+      3. If the app is NOT RBI Registered AND asks for SMS, Contacts, or Gallery, it is highly likely a predatory blackmail app. Score it severely low (0-30).
+      4. If user reviews explicitly mention "blackmail", "calling my contacts", or "fake loan", score it 0-10.
+      
       Output your analysis in strict JSON format with the following keys:
-      - safetyScore: a number from 0 to 100 (100 being completely safe, 0 being highly predatory)
+      - safetyScore: number (0 to 100)
       - riskLevel: "Safe", "Warning", or "Danger"
-      - summary: A 2-sentence summary explaining why this score was given.
-      - suspiciousPermissions: An array of strings highlighting dangerous permissions (like reading SMS, Contacts, Gallery if unjustified).
+      - summary: A 2-sentence summary explaining the score. If it's an RBI verified app, explicitly state that standard banking permissions were forgiven.
+      - suspiciousPermissions: An array of strings highlighting truly dangerous/unjustified permissions based on the rules. (Can be empty for verified apps).
       - fakeReviewSuspected: boolean, true if reviews look bot-generated.
     `;
 

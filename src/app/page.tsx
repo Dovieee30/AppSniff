@@ -10,11 +10,20 @@ export default function Home() {
   const [error, setError] = useState('');
 
   const parseAppId = (input: string) => {
-    if (input.includes('id=')) {
-      const urlParams = new URLSearchParams(input.split('?')[1]);
-      return urlParams.get('id');
+    try {
+      if (input.includes('apps.apple.com')) {
+        const match = input.match(/\/id(\d+)/);
+        if (match) return match[1];
+      }
+      
+      if (input.includes('id=')) {
+        const urlParams = new URLSearchParams(input.split('?')[1]);
+        return urlParams.get('id');
+      }
+      return input.trim();
+    } catch {
+      return input.trim();
     }
-    return input.trim();
   };
 
   const simulateScanSteps = async () => {
@@ -40,6 +49,7 @@ export default function Home() {
     setLoading(true);
 
     const appId = parseAppId(query);
+    const platform = query.includes('apple.com') ? 'ios' : 'android';
     if (!appId) {
       setError("Invalid App ID or URL");
       setLoading(false);
@@ -52,7 +62,7 @@ export default function Home() {
       const res = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ appId })
+        body: JSON.stringify({ appId, platform })
       });
       const data = await res.json();
       await scanAnimPromise;
@@ -111,7 +121,7 @@ export default function Home() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 className="search-input"
-                placeholder="Paste Play Store URL or App Name..." 
+                placeholder="Paste Play Store or App Store URL..." 
                 disabled={loading}
               />
               <button type="submit" className="search-btn" disabled={loading || !query}>
