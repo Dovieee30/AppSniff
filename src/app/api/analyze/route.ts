@@ -19,7 +19,13 @@ export async function POST(req: Request) {
     }
 
     // 1. Scrape App Data from Google Play
-    const appData = await gplay.app({ appId });
+    let appData;
+    try {
+      appData = await gplay.app({ appId });
+    } catch (e: any) {
+      console.error("Scraper error:", e.message);
+      return NextResponse.json({ error: 'App not found on Play Store or invalid ID' }, { status: 404 });
+    }
     
     // Scrape Permissions
     let permissions: any[] = [];
@@ -39,12 +45,13 @@ export async function POST(req: Request) {
     }
 
     // 2. Check RBI Registry in Supabase
-    // We use fuzzy matching (ilike) on the developer name.
+    // We use advanced fuzzy matching (pg_trgm) via our RPC function.
     const { data: nbfcData, error: nbfcError } = await supabase
-      .from('rbi_nbfc_registry')
-      .select('*')
-      .ilike('company_name', `%${appData.developer}%`)
-      .limit(1);
+      .rpc('search_nbfc', { search_term: appData.developer });
+    
+    if (nbfcError) {
+      console.error("Supabase RPC error:", nbfcError);
+    }
 
     const isRBIRegistered = (nbfcData && nbfcData.length > 0) ? true : false;
 
@@ -59,6 +66,7 @@ export async function POST(req: Request) {
       
       App Name: ${appData.title}
       Developer: ${appData.developer}
+      Category/Genre: ${appData.genre || 'Unknown'}
       RBI Registered NBFC: ${isRBIRegistered ? 'Yes' : 'No'}
       
       Permissions Requested:
