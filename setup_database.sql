@@ -1,8 +1,18 @@
--- 1. Create the table for RBI registered NBFCs
-CREATE TABLE IF NOT EXISTS public.rbi_nbfc_registry (
+-- 1. Drop existing table if it exists (so you can run this clean)
+DROP TABLE IF EXISTS public.rbi_nbfc_registry CASCADE;
+
+-- 2. Create the table for RBI registered NBFCs with all columns
+CREATE TABLE public.rbi_nbfc_registry (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    sl_no TEXT,
     company_name TEXT UNIQUE NOT NULL,
     regional_office TEXT,
+    accepts_public_deposits TEXT,
+    classification TEXT,
+    cin TEXT,
+    layer TEXT,
+    address TEXT,
+    email_id TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
