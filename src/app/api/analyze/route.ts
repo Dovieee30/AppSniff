@@ -59,7 +59,7 @@ export async function POST(req: Request) {
       }
       
       try {
-        const reviewsData = await gplay.reviews({ appId, country: 'in', sort: gplay.sort.NEWEST, num: 50 });
+        const reviewsData = await gplay.reviews({ appId, country: 'in', sort: gplay.sort.HELPFULNESS, num: 50 });
         reviews = reviewsData.data;
       } catch (e) {
         console.warn("Could not fetch reviews:", e);
@@ -98,11 +98,12 @@ export async function POST(req: Request) {
       Recent User Reviews:
       ${reviewsList}
       
-      SCORING RULES:
-      1. If the app is RBI Registered (YES), it is a legally compliant banking/finance app. Permissions like SMS (for OTP), Contacts (for UPI/Sharing), Camera (for KYC), and Location are STANDARD and JUSTIFIED. Do NOT penalize the app for these permissions unless reviews explicitly mention data theft or blackmail.
-      2. If an RBI Registered app has bad reviews about "loan rejected" or "high interest", that is normal customer service friction, NOT a scam. Score it highly (70-100).
-      3. If the app is NOT RBI Registered AND asks for SMS, Contacts, or Gallery, it is highly likely a predatory blackmail app. Score it severely low (0-30).
-      4. If user reviews explicitly mention "blackmail", "calling my contacts", or "fake loan", score it 0-10.
+      SCORING RULES (STRICTLY FOLLOW THESE EXACT NUMBERS):
+      1. If the app is RBI Registered (YES) and there is NO mention of blackmail, score it EXACTLY 85. Permissions like SMS (for OTP), Contacts (for UPI/Sharing), Camera (for KYC), and Location are STANDARD and JUSTIFIED.
+      2. If an RBI Registered app has bad reviews about "loan rejected" or "high interest", it is normal customer service friction. The score remains EXACTLY 85.
+      3. If the app is NOT RBI Registered AND asks for SMS, Contacts, or Gallery, it is highly likely a predatory blackmail app. Score it EXACTLY 15.
+      4. If user reviews explicitly mention "blackmail", "calling my contacts", or "fake loan", score it EXACTLY 5.
+      5. If none of the above apply, score it EXACTLY 50 (Moderate Risk).
       
       Output your analysis in strict JSON format with the following keys:
       - safetyScore: number (0 to 100)
@@ -115,7 +116,8 @@ export async function POST(req: Request) {
     const chatCompletion = await groq.chat.completions.create({
       messages: [{ role: 'user', content: prompt }],
       model: 'llama-3.1-8b-instant',
-      temperature: 0.2,
+      temperature: 0.0,
+      seed: 42,
       response_format: { type: "json_object" }
     });
 

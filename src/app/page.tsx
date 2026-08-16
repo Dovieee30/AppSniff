@@ -129,7 +129,7 @@ export default function Home() {
             <div className="mt-8 bg-[var(--bg-surface)] shadow-[0_20px_40px_rgba(0,0,0,0.06)] p-6 rounded-[24px] flex items-start gap-4 animate-fade-in text-left max-w-2xl w-full mx-auto border-l-[6px] border-[#F89C74]">
               <XCircle className="w-6 h-6 mt-0.5 flex-shrink-0 text-[#F89C74]" />
               <div>
-                <h3 className="text-lg font-bold text-[#333]">Analysis Failed</h3>
+                <h3 className="text-lg font-bold text-[#4A4A4A]">Analysis Failed</h3>
                 <p className="text-[1.05rem] font-medium text-[#777] mt-1">{error}</p>
               </div>
             </div>
@@ -138,20 +138,20 @@ export default function Home() {
           {/* Loading Animation */}
           {loading && (
             <div className="mt-14 bg-[var(--bg-surface)] rounded-[36px] p-10 w-full max-w-2xl mx-auto text-left overflow-hidden relative shadow-[0_20px_40px_rgba(0,0,0,0.06)]">
-              <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#66C5CC] via-[#F6CF71] to-[#F89C74] animate-pulse" />
+              <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#45C498] via-[#F6CF71] to-[#F89C74] animate-pulse" />
               <div className="flex items-center gap-4 mb-8">
-                <SearchCode className="w-10 h-10 text-[#66C5CC] animate-bounce" />
-                <h2 className="text-2xl font-bold text-[#333]">Deep Scanning...</h2>
+                <SearchCode className="w-10 h-10 text-[#45C498] animate-bounce" />
+                <h2 className="text-2xl font-bold text-[#4A4A4A]">Deep Scanning...</h2>
               </div>
               <div className="space-y-5">
                 {scanSteps.map((step, idx) => (
                   <div key={idx} className="flex items-center gap-4 text-[#555] animate-fade-in-right">
-                    <CheckCircle className="w-6 h-6 text-[#66C5CC]" />
+                    <CheckCircle className="w-6 h-6 text-[#45C498]" />
                     <span className="font-semibold text-lg">{step}</span>
                   </div>
                 ))}
                 <div className="flex items-center gap-4 text-[#888] animate-pulse mt-6">
-                  <div className="w-6 h-6 rounded-full border-[3px] border-[#f0f0f0] border-t-[#66C5CC] animate-spin" />
+                  <div className="w-6 h-6 rounded-full border-[3px] border-[#f0f0f0] border-t-[#45C498] animate-spin" />
                   <span className="font-semibold text-lg">Processing...</span>
                 </div>
               </div>
@@ -160,7 +160,7 @@ export default function Home() {
 
           {/* Results Dashboard */}
           {result && !loading && (
-            <div className="mt-14 w-full max-w-4xl mx-auto animate-fade-in-up space-y-8 text-left">
+            <div className="mt-14 w-full mx-auto animate-fade-in-up space-y-8 text-left">
               {/* Main Score Card */}
               <div className="bg-[var(--bg-surface)] rounded-[36px] p-10 flex flex-col md:flex-row gap-10 items-center shadow-[0_20px_50px_rgba(0,0,0,0.06)]">
                 <div className="w-32 h-32 rounded-3xl overflow-hidden shadow-lg flex-shrink-0 bg-[var(--bg-base)]">
@@ -171,7 +171,7 @@ export default function Home() {
                   )}
                 </div>
                 <div className="flex-1 text-center md:text-left">
-                  <h2 className="text-3xl font-extrabold text-[#333] mb-2">{result.app.title}</h2>
+                  <h2 className="text-3xl font-extrabold text-[#4A4A4A] mb-2">{result.app.title}</h2>
                   <p className="text-[#777] font-semibold text-lg mb-4">{result.app.developer}</p>
                   <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 text-[0.95rem] font-bold">
                     <span className="px-4 py-1.5 bg-[var(--bg-base)] text-[#555] rounded-full">{result.app.installs} Installs</span>
@@ -179,51 +179,80 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="flex flex-col items-center justify-center">
-                  <div className={`w-28 h-28 rounded-full flex items-center justify-center border-[6px] ${result.analysis.safetyScore > 80 ? 'border-[#66C5CC] text-[#66C5CC]' : result.analysis.safetyScore > 50 ? 'border-[#F6CF71] text-[#e0b020]' : 'border-[#F89C74] text-[#F89C74]'}`}>
-                    <span className="text-4xl font-black">{result.analysis.safetyScore}</span>
+                  <div className={`relative w-32 h-32 flex items-center justify-center ${result.analysis.safetyScore >= 80 ? 'text-[#45C498]' : result.analysis.safetyScore > 50 ? 'text-[#e0b020]' : 'text-[#F89C74]'}`}>
+                    <svg viewBox="0 0 128 128" className="absolute top-0 left-0 w-full h-full transform -rotate-90 drop-shadow-sm">
+                      <circle cx="64" cy="64" r="54" fill="none" stroke="#E8E8E8" strokeWidth="8" />
+                      <circle cx="64" cy="64" r="54" fill="none" stroke="currentColor" strokeWidth="8" strokeDasharray="339" strokeDashoffset={339 - (339 * result.analysis.safetyScore) / 100} className="transition-all duration-1000 ease-out" strokeLinecap="round" />
+                    </svg>
+                    <span className="text-4xl font-black z-10">{Math.round(Number(result.analysis.safetyScore))}</span>
                   </div>
                   <span className="text-sm font-bold uppercase tracking-widest mt-3 text-[#999]">Safety Score</span>
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-8">
+              <div className="flex flex-col md:flex-row items-stretch gap-8 w-full">
                 {/* RBI Status */}
-                <div className="bg-[var(--bg-surface)] rounded-[32px] p-8 shadow-[0_20px_40px_rgba(0,0,0,0.04)] relative overflow-hidden">
-                  <div className={`absolute top-0 left-0 w-2 h-full ${result.rbiRegistered ? 'bg-[#66C5CC]' : 'bg-[#F89C74]'}`}></div>
+                <div className="bg-[var(--bg-surface)] rounded-[32px] p-8 shadow-[0_20px_40px_rgba(0,0,0,0.04)] relative overflow-hidden flex-1 w-full flex flex-col">
+                  <div className={`absolute top-0 left-0 w-2 h-full ${result.rbiRegistered ? 'bg-[#45C498]' : 'bg-[#F89C74]'}`}></div>
                   <div className="flex items-center gap-3 mb-4">
-                    {result.rbiRegistered ? <ShieldCheck className="w-8 h-8 text-[#66C5CC]" /> : <ShieldAlert className="w-8 h-8 text-[#F89C74]" />}
-                    <h3 className="font-bold text-xl text-[#333]">RBI Registry Status</h3>
+                    {result.rbiRegistered ? <ShieldCheck className="w-8 h-8 text-[#45C498]" /> : <ShieldAlert className="w-8 h-8 text-[#F89C74]" />}
+                    <h3 className="font-bold text-xl text-[#4A4A4A]">RBI Registry Status</h3>
                   </div>
-                  <p className="text-[1.1rem] font-medium text-[#555] leading-relaxed">
-                    {result.rbiRegistered 
-                      ? "Verified: This developer matched with an official RBI-registered NBFC. It is a legitimate lending institution." 
-                      : "Warning: We could not find this developer in the official RBI registry. This app may be operating illegally."}
-                  </p>
+                  <ul className="space-y-3 mt-2">
+                    {result.rbiRegistered ? (
+                      <>
+                        <li className="flex items-start gap-3 text-[1.1rem] font-medium text-[#555]">
+                          <span className="text-[#45C498] font-black mt-0.5">•</span> Verified developer match
+                        </li>
+                        <li className="flex items-start gap-3 text-[1.1rem] font-medium text-[#555]">
+                          <span className="text-[#45C498] font-black mt-0.5">•</span> Official RBI-registered NBFC
+                        </li>
+                        <li className="flex items-start gap-3 text-[1.1rem] font-medium text-[#555]">
+                          <span className="text-[#45C498] font-black mt-0.5">•</span> Legitimate lending institution
+                        </li>
+                      </>
+                    ) : (
+                      <>
+                        <li className="flex items-start gap-3 text-[1.1rem] font-medium text-[#555]">
+                          <span className="text-[#F89C74] font-black mt-0.5">•</span> Developer not found in registry
+                        </li>
+                        <li className="flex items-start gap-3 text-[1.1rem] font-medium text-[#555]">
+                          <span className="text-[#F89C74] font-black mt-0.5">•</span> Unverified lending institution
+                        </li>
+                        <li className="flex items-start gap-3 text-[1.1rem] font-medium text-[#555]">
+                          <span className="text-[#F89C74] font-black mt-0.5">•</span> High risk of illegal operation
+                        </li>
+                      </>
+                    )}
+                  </ul>
                 </div>
 
                 {/* AI Summary */}
-                <div className="bg-[var(--bg-surface)] rounded-[32px] p-8 shadow-[0_20px_40px_rgba(0,0,0,0.04)] relative overflow-hidden">
+                <div className="bg-[var(--bg-surface)] rounded-[32px] p-8 shadow-[0_20px_40px_rgba(0,0,0,0.04)] relative overflow-hidden flex-1 w-full flex flex-col">
                   <div className="absolute top-0 left-0 w-2 h-full bg-[#F6CF71]"></div>
                   <div className="flex items-center gap-3 mb-4">
                     <SearchCode className="w-8 h-8 text-[#e0b020]" />
-                    <h3 className="font-bold text-xl text-[#333]">AI Risk Analysis</h3>
+                    <h3 className="font-bold text-xl text-[#4A4A4A]">AI Risk Analysis</h3>
                   </div>
-                  <p className="text-[1.1rem] font-medium text-[#555] leading-relaxed">
-                    {result.analysis.summary}
-                  </p>
+                  <ul className="space-y-3 mt-2">
+                    {result.analysis.summary.split('. ').filter((s: string) => s.trim().length > 0).map((sentence: string, idx: number) => (
+                      <li key={idx} className="flex items-start gap-3 text-[1.1rem] font-medium text-[#555]">
+                        <span className="text-[#F6CF71] font-black mt-0.5">•</span>
+                        {sentence.trim()}{!sentence.endsWith('.') ? '.' : ''}
+                      </li>
+                    ))}
+                  </ul>
                   {result.analysis.fakeReviewSuspected && (
                     <div className="mt-5 inline-flex items-center gap-2 bg-[#F89C74]/15 text-[#d96738] px-4 py-2 rounded-xl text-sm font-bold">
                       <AlertTriangle className="w-5 h-5" /> Fake Reviews Detected
                     </div>
                   )}
                 </div>
-              </div>
-
               {/* Suspicious Permissions */}
               {result.analysis.suspiciousPermissions?.length > 0 && (
-                <div className="bg-[var(--bg-surface)] rounded-[32px] p-8 shadow-[0_20px_40px_rgba(0,0,0,0.04)] relative overflow-hidden">
+                <div className="bg-[var(--bg-surface)] rounded-[32px] p-8 shadow-[0_20px_40px_rgba(0,0,0,0.04)] relative overflow-hidden flex-1 w-full flex flex-col">
                    <div className="absolute top-0 left-0 w-2 h-full bg-[#F89C74]"></div>
-                   <h3 className="font-bold text-xl text-[#333] mb-5 flex items-center gap-3">
+                   <h3 className="font-bold text-xl text-[#4A4A4A] mb-5 flex items-center gap-3">
                     <AlertTriangle className="w-7 h-7 text-[#F89C74]" /> Suspicious Permissions
                   </h3>
                   <ul className="space-y-3">
@@ -235,6 +264,7 @@ export default function Home() {
                   </ul>
                 </div>
               )}
+              </div>
             </div>
           )}
         </section>
@@ -308,6 +338,17 @@ export default function Home() {
           </>
         )}
       </main>
+
+      <footer className="w-full text-center py-10 text-[#888] font-medium text-sm mt-auto border-t border-[rgba(0,0,0,0.05)] bg-[var(--bg-base)]">
+        <div className="max-w-4xl mx-auto px-5 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="logo text-xl" style={{ fontSize: '1.25rem' }}>App<span>Sniff</span></div>
+          <p>© {new Date().getFullYear()} AppSniff. Not affiliated with the RBI.</p>
+          <div className="flex gap-4">
+            <a href="#" className="hover:text-[#333] transition-colors">Privacy</a>
+            <a href="#" className="hover:text-[#333] transition-colors">Terms</a>
+          </div>
+        </div>
+      </footer>
     </>
   );
 }
