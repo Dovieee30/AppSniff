@@ -11,10 +11,18 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY || 'placeholder' });
-
 export async function POST(req: Request) {
   try {
+    // Validate GROQ_API_KEY is actually set at runtime
+    const groqApiKey = process.env.GROQ_API_KEY;
+    if (!groqApiKey) {
+      console.error('GROQ_API_KEY is not set in environment variables!');
+      return NextResponse.json(
+        { error: 'Server configuration error: AI API key is missing. Please set GROQ_API_KEY in your environment variables.' },
+        { status: 500 }
+      );
+    }
+    const groq = new Groq({ apiKey: groqApiKey });
     const { appId, platform = 'android' } = await req.json();
 
     if (!appId) {
