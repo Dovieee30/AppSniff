@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from 'next/server';
 import gplay from 'google-play-scraper';
+// @ts-expect-error missing typings for app-store-scraper
 import appStore from 'app-store-scraper';
 import { createClient } from '@supabase/supabase-js';
 import Groq from 'groq-sdk';
@@ -53,12 +55,14 @@ export async function POST(req: Request) {
       }
       
       try {
+        // @ts-expect-error country doesn't exist in TS interface but works in runtime
         permissions = await gplay.permissions({ appId, country: 'in' });
       } catch (e) {
         console.warn("Could not fetch permissions:", e);
       }
       
       try {
+        // @ts-expect-error HELPFULNESS is missing from TS enum
         const reviewsData = await gplay.reviews({ appId, country: 'in', sort: gplay.sort.HELPFULNESS, num: 50 });
         reviews = reviewsData.data;
       } catch (e) {

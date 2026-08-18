@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useState } from 'react';
 import { SearchCode, CheckCircle, ShieldCheck, ShieldAlert, AlertTriangle, XCircle } from 'lucide-react';
@@ -94,7 +96,7 @@ export default function Home() {
         <section className="hero">
 
           <h1>
-            Don't fall for <span className="highlight">fake</span> loan apps.
+            Don&apos;t fall for <span className="highlight">fake</span> loan apps.
           </h1>
           <p>
             Verify if a lending app is registered with the RBI, check what suspicious 
@@ -301,7 +303,7 @@ export default function Home() {
                   </div>
                   <h3>RBI Registry Check</h3>
                   <p>
-                    We instantly cross-reference the app's developer and associated NBFC with 
+                    We instantly cross-reference the app&apos;s developer and associated NBFC with 
                     the official Reserve Bank of India registry to ensure they are legal.
                   </p>
                 </div>
@@ -329,8 +331,8 @@ export default function Home() {
                   </div>
                   <h3>AI Review Insights</h3>
                   <p>
-                    Our AI scans hundreds of user reviews looking for keywords like "harassment", 
-                    "fake", or "high interest" to uncover hidden red flags.
+                    Our AI scans hundreds of user reviews looking for keywords like &quot;harassment&quot;, 
+                    &quot;fake&quot;, or &quot;high interest&quot; to uncover hidden red flags.
                   </p>
                 </div>
               </div>
