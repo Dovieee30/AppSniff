@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from 'next/server';
 import gplay from 'google-play-scraper';
-// @ts-expect-error no types
 import appStore from 'app-store-scraper';
 import { createClient } from '@supabase/supabase-js';
 import Groq from 'groq-sdk';
@@ -55,14 +53,12 @@ export async function POST(req: Request) {
       }
       
       try {
-        // @ts-expect-error no types
         permissions = await gplay.permissions({ appId, country: 'in' });
       } catch (e) {
         console.warn("Could not fetch permissions:", e);
       }
       
       try {
-        // @ts-expect-error no types
         const reviewsData = await gplay.reviews({ appId, country: 'in', sort: gplay.sort.HELPFULNESS, num: 50 });
         reviews = reviewsData.data;
       } catch (e) {
@@ -119,7 +115,7 @@ export async function POST(req: Request) {
 
     const chatCompletion = await groq.chat.completions.create({
       messages: [{ role: 'user', content: prompt }],
-      model: 'llama3-8b-8192',
+      model: 'openai/gpt-oss-20b',
       temperature: 0.0,
       seed: 42,
       response_format: { type: "json_object" }

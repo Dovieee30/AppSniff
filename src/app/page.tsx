@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @next/next/no-img-element */
 "use client";
 import React, { useState } from 'react';
 import { SearchCode, CheckCircle, ShieldCheck, ShieldAlert, AlertTriangle, XCircle } from 'lucide-react';
@@ -95,7 +94,7 @@ export default function Home() {
         <section className="hero">
 
           <h1>
-            Don&apos;t fall for <span className="highlight">fake</span> loan apps.
+            Don't fall for <span className="highlight">fake</span> loan apps.
           </h1>
           <p>
             Verify if a lending app is registered with the RBI, check what suspicious 
@@ -302,7 +301,7 @@ export default function Home() {
                   </div>
                   <h3>RBI Registry Check</h3>
                   <p>
-                    We instantly cross-reference the app&apos;s developer and associated NBFC with 
+                    We instantly cross-reference the app's developer and associated NBFC with 
                     the official Reserve Bank of India registry to ensure they are legal.
                   </p>
                 </div>
@@ -330,52 +329,9 @@ export default function Home() {
                   </div>
                   <h3>AI Review Insights</h3>
                   <p>
-                    Our AI scans hundreds of user reviews looking for keywords like &quot;harassment&quot;, 
-                    &quot;fake&quot;, or &quot;high interest&quot; to uncover hidden red flags.
+                    Our AI scans hundreds of user reviews looking for keywords like "harassment", 
+                    "fake", or "high interest" to uncover hidden red flags.
                   </p>
-                </div>
-              </div>
-            </section>
-
-            <section id="about" className="mb-24">
-              <div className="features-header" style={{ marginBottom: '3rem' }}>
-                <h2>About AppSniff</h2>
-                <p>Why we built this tool.</p>
-              </div>
-              <div className="bg-[var(--bg-surface)] rounded-[36px] p-10 md:p-14 shadow-[0_20px_40px_rgba(0,0,0,0.03)] text-left max-w-4xl mx-auto">
-                <p className="text-[1.15rem] text-[var(--text-secondary)] mb-6 leading-relaxed font-medium">
-                  Predatory loan apps are on the rise, trapping vulnerable individuals in endless debt cycles and resorting to severe blackmail using stolen contacts and photos. 
-                </p>
-                <p className="text-[1.15rem] text-[var(--text-secondary)] mb-8 leading-relaxed font-medium">
-                  <strong>AppSniff</strong> was created to put the power back in your hands. By instantly cross-referencing apps with the official Reserve Bank of India (RBI) registry and using AI to analyze permissions and reviews, we provide a clear, easy-to-understand safety score before you hit download.
-                </p>
-                <div className="bg-[rgba(69,196,152,0.15)] text-[#2d916d] p-6 rounded-[24px] font-bold flex items-start gap-4">
-                  <ShieldCheck className="w-7 h-7 flex-shrink-0 mt-0.5" />
-                  <span className="text-[1.1rem]">Our mission is simple: to stop financial harassment before it starts. We are an independent platform, not affiliated with the RBI or any government entity.</span>
-                </div>
-              </div>
-            </section>
-
-            <section id="contact" className="mb-20">
-              <div className="features-header" style={{ marginBottom: '3rem' }}>
-                <h2>Report Fraud</h2>
-                <p>Have you been harassed by a loan app?</p>
-              </div>
-              <div className="bg-[var(--bg-surface)] rounded-[36px] p-10 md:p-14 shadow-[0_20px_40px_rgba(0,0,0,0.03)] text-center max-w-2xl mx-auto border-t-4 border-[#F89C74]">
-                <div className="w-20 h-20 bg-[#F89C74]/20 text-[#F89C74] rounded-3xl flex items-center justify-center mx-auto mb-8">
-                  <ShieldAlert className="w-10 h-10" />
-                </div>
-                <h3 className="text-[1.75rem] font-bold text-[var(--text-primary)] mb-4">Take Action Immediately</h3>
-                <p className="text-[1.15rem] text-[var(--text-secondary)] font-medium mb-10 leading-relaxed">
-                  We are just an independent tool. If you are a victim of harassment, extortion, or threats from a predatory loan app, you must report it to the official authorities.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <a href="https://cybercrime.gov.in" target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-3 bg-[var(--text-primary)] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#333] transition-all hover:scale-105 active:scale-95">
-                    Visit Cyber Crime Portal
-                  </a>
-                  <a href="tel:1930" className="inline-flex items-center justify-center gap-3 bg-[rgba(248,156,116,0.15)] text-[#e8703e] px-8 py-4 rounded-full font-bold text-lg hover:bg-[rgba(248,156,116,0.25)] transition-all hover:scale-105 active:scale-95">
-                    Call 1930
-                  </a>
                 </div>
               </div>
             </section>
