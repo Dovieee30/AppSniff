@@ -75,7 +75,29 @@ export async function POST(req: Request) {
       console.error("Supabase RPC error:", nbfcError);
     }
 
-    const isRBIRegistered = (nbfcData && nbfcData.length > 0) ? true : false;
+    let isRBIRegistered = false;
+    if (nbfcData && nbfcData.length > 0) {
+      const normalize = (s: string) => (s || '').toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => !['private', 'pvt', 'limited', 'ltd', 'services', 'technologies', 'india', 'finance', 'financial', 'loan', 'loans'].includes(w) && w.length > 2);
+      const devWords = normalize(appData.developer);
+      const devSet = new Set(devWords);
+
+      for (const nbfc of nbfcData) {
+        const nbfcWords = normalize(nbfc.company_name);
+        const nbfcSet = new Set(nbfcWords);
+        
+        if (devSet.size === 0 || nbfcSet.size === 0) continue;
+        
+        let intersection = 0;
+        for (const w of devSet) {
+          if (nbfcSet.has(w)) intersection++;
+        }
+        
+        if (intersection > 0 && (intersection / Math.max(devSet.size, nbfcSet.size) >= 0.5)) {
+          isRBIRegistered = true;
+          break;
+        }
+      }
+    }
 
     // 3. AI Analysis with Groq
     const permissionsList = permissions.map(p => p.permission).join(', ') || 'No permissions found';
