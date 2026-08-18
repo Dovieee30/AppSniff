@@ -6,12 +6,12 @@ import appStore from 'app-store-scraper';
 import { createClient } from '@supabase/supabase-js';
 import Groq from 'groq-sdk';
 
-// Initialize clients
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+// Initialize clients with fallbacks to prevent build crashes on Vercel
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY || 'placeholder' });
 
 export async function POST(req: Request) {
   try {
