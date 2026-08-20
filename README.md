@@ -156,6 +156,3 @@ AppSniff/
 - 🎨 **Beautiful Dashboard** — Animated score ring, color-coded risk cards, and responsive layout
 - 🔍 **Fake Review Detection** — AI flags bot-generated reviews to expose manipulation
 
-## License
-
-MIT © AppSniff
