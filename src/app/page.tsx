@@ -337,6 +337,115 @@ export default function Home() {
                 </div>
               </div>
             </section>
+
+            <section id="about" className="about-section">
+              <div className="about-content">
+                <div className="features-header">
+                  <h2>About <span className="highlight">AppSniff</span></h2>
+                  <p>Built to protect Indian consumers from the surge of predatory lending apps.</p>
+                </div>
+
+                <div className="features-grid text-left">
+                  <div className="feature-card">
+                    <div className="feature-icon-wrapper icon-safe">
+                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                      </svg>
+                    </div>
+                    <h3>Our Mission</h3>
+                    <p>
+                      India has seen a surge in predatory lending apps that harass users, steal personal 
+                      data, and operate without any regulatory license. AppSniff was built to fight back.
+                    </p>
+                  </div>
+
+                  <div className="feature-card">
+                    <div className="feature-icon-wrapper icon-warn">
+                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M16 8l-8 8"></path>
+                        <path d="M8 8l8 8"></path>
+                      </svg>
+                    </div>
+                    <h3>The Problem</h3>
+                    <p>
+                      Thousands of unregistered loan apps operate illegally on app stores, using 
+                      harassment, data theft, and hidden fees to exploit vulnerable borrowers.
+                    </p>
+                  </div>
+
+                  <div className="feature-card">
+                    <div className="feature-icon-wrapper icon-ai">
+                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                        <path d="M2 17l10 5 10-5"></path>
+                        <path d="M2 12l10 5 10-5"></path>
+                      </svg>
+                    </div>
+                    <h3>Our Approach</h3>
+                    <p>
+                      We combine real-time Play Store metadata, the official RBI NBFC registry, and 
+                      advanced AI analysis to give you a safety report — before you install.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section id="contact" className="contact-section">
+              <div className="contact-content">
+                <div className="features-header">
+                  <h2>Get in <span className="highlight">Touch</span></h2>
+                  <p>Have questions, feedback, or want to report a suspicious app?</p>
+                </div>
+
+                <div className="features-grid text-left">
+                  <div className="feature-card">
+                    <div className="feature-icon-wrapper icon-safe">
+                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                      </svg>
+                    </div>
+                    <h3>GitHub</h3>
+                    <p>
+                      AppSniff is open source. Explore the code, contribute features, or 
+                      open an issue on our GitHub repository.
+                    </p>
+                  </div>
+
+                  <div className="feature-card">
+                    <div className="feature-icon-wrapper icon-warn">
+                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                      </svg>
+                    </div>
+                    <h3>Report an App</h3>
+                    <p>
+                      Spotted a suspicious lending app? Flag it through our platform and help 
+                      protect others from falling victim to scams.
+                    </p>
+                  </div>
+
+                  <div className="feature-card">
+                    <div className="feature-icon-wrapper icon-ai">
+                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                      </svg>
+                    </div>
+                    <h3>Community</h3>
+                    <p>
+                      Join our growing community of users who are fighting back against 
+                      predatory lending apps across India.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
           </>
         )}
       </main>
